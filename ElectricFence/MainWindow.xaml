@@ -1,0 +1,124 @@
+﻿<Window x:Class="ElectricFence.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ElectricFence"
+        mc:Ignorable="d"
+        Icon="Resources\lightning_wall.png"
+        Title="Electric Fence" Height="400" Width="525" ResizeMode="CanMinimize">
+    <Grid x:Name="WindowRoot"
+          Margin="0,1,0,0">
+        <TabControl x:Name="header">
+            <TabItem Header="New Rule">
+                <Grid x:Name="NewTab">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Resources\high_voltage.png" Stretch="Uniform" Opacity="0.2"/>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Display Name:"
+                           Margin="10,0,407,0" VerticalAlignment="Center" Grid.Row="0" Height="27"/>
+                    <TextBox Name="displayName"
+                             TextWrapping="NoWrap" Margin="111,0,260,0" VerticalAlignment="Center" Grid.Row="0" Height="24" FontSize="14" VerticalContentAlignment="Center"/>
+                    <Label Content="Group Name:"
+                           Margin="258,0,157,0" VerticalAlignment="Center" Height="27"/>
+                    <TextBox Name="groupName"
+                             TextWrapping="NoWrap" Margin="361,0,10,0" VerticalAlignment="Center" Grid.Row="0" Height="24" FontSize="14" VerticalContentAlignment="Center"/>
+                    <Label Content="Description:"
+                           Margin="10,0,407,0" VerticalAlignment="Center" Grid.Row="1" Height="27"/>
+                    <TextBox Name="description"
+                             TextWrapping="NoWrap" Margin="111,0,10,0" VerticalAlignment="Center" Grid.Row="1" Height="24" FontSize="14" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="protocol" Height="24" Margin="15,0,260,0" VerticalAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center">
+                        <ComboBoxItem IsSelected="True">Any protocol (default)</ComboBoxItem>
+                        <ComboBoxItem>ICMP (1)</ComboBoxItem>
+                        <ComboBoxItem>TCP (6)</ComboBoxItem>
+                        <ComboBoxItem>UDP (17)</ComboBoxItem>
+                    </ComboBox>
+                    <StackPanel Orientation="Vertical" Margin="265,0,157,0" VerticalAlignment="Center" Grid.Row="2">
+                        <RadioButton Name="allowButton" GroupName="action" Content="Allow" Grid.Row="0" IsChecked="True"/>
+                        <RadioButton Name="blockButton" GroupName="action" Content="Block" Grid.Row="0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="376,0,10,0" VerticalAlignment="Center" Grid.Row="2">
+                        <RadioButton Name="inboundButton" GroupName="direction" Content="Inbound" Grid.Row="0" IsChecked="True"/>
+                        <RadioButton Name="outboundButton" GroupName="direction" Content="Outbound" Grid.Row="0"/>
+                    </StackPanel>
+                    <Label Content="IP Address:"
+                           Margin="10,0,407,0" VerticalAlignment="Center" Grid.Row="3" Height="27"/>
+                    <TextBox Name="lAddress"
+                             TextWrapping="NoWrap" Margin="111,0,322,0" VerticalAlignment="Center" Grid.Row="3" Height="24" FontSize="14" VerticalContentAlignment="Center"/>
+                    <Label Content=" / "
+                           Margin="191,0,292,0" VerticalAlignment="Center" Grid.Row="3" Height="27" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <TextBox Name="lCIDR"
+                             TextWrapping="NoWrap" Margin="221,0,260,0" VerticalAlignment="Center" Grid.Row="3" Height="24" MaxLines="1" MaxLength="2" VerticalContentAlignment="Center"/>
+                    <Label Content="Port Range:"
+                           Margin="265,0,157,0" VerticalAlignment="Center" Grid.Row="3" Height="27"/>
+                    <TextBox Name="lPort1"
+                             TextWrapping="NoWrap" Margin="361,0,97,0" VerticalAlignment="Center" Grid.Row="3" Height="24" FontSize="14" MaxLines="1" MaxLength="5" VerticalContentAlignment="Center"/>
+                    <Label Content="-"
+                           Margin="0,0,70,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Height="27" Width="22" HorizontalContentAlignment="Center"/>
+                    <TextBox Name="lPort2"
+                             TextWrapping="NoWrap" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Height="24" FontSize="14" Width="55" VerticalContentAlignment="Center" MaxLines="1" MaxLength="5"/>
+                    <Label Content="Authentication:"
+                           Margin="10,0,402,0" VerticalAlignment="Center" Grid.Row="4"/>
+                    <ComboBox Name="authentication" Height="24" Margin="111,0,260,0" VerticalAlignment="Center" Grid.Row="4" VerticalContentAlignment="Center">
+                        <ComboBoxItem IsSelected="True">Not required (default)</ComboBoxItem>
+                        <ComboBoxItem>Required (authenticated by IPsec rules)</ComboBoxItem>
+                        <ComboBoxItem>No encapsulation (ESP and IDS compatibility)</ComboBoxItem>
+                    </ComboBox>
+                    <Label Content="Interface Type:" Margin="260,0,157,0" VerticalAlignment="Center" Grid.Row="4"/>
+                    <ComboBox Name="intfc" Height="24" Margin="361,0,10,0" VerticalAlignment="Center" Grid.Row="4" VerticalContentAlignment="Center">
+                        <ComboBoxItem IsSelected="True">Any (default)</ComboBoxItem>
+                        <ComboBoxItem>Wired</ComboBoxItem>
+                        <ComboBoxItem>Wireless</ComboBoxItem>
+                        <ComboBoxItem>Remote Access (IPsec)</ComboBoxItem>
+                    </ComboBox>
+                    <Button Name="generate" Content=" Generate script " Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" FontSize="24" FontFamily="Segoe UI Light" Grid.Row="5" Click="generate_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Review Script">
+                <Grid x:Name="ReviewTab">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Resources\high_voltage.png" Stretch="Uniform" Opacity="0.2"/>
+                    </Grid.Background>
+                    <TextBox Name="scriptPreview"
+                             TextWrapping="WrapWithOverflow" Margin="10,10,10,56" FontSize="14" FontFamily="Courier New" Background="Transparent" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <ComboBox Name="list" Height="36" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="220" FontSize="18" VerticalContentAlignment="Center" SelectionChanged="list_SelectionChanged"/>
+                    <Button Name="run"
+                            Content=" Run script " Margin="0,0,144,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="Auto" FontSize="24" FontFamily="Segoe UI Light" Click="run_Click"/>
+                    <Button Name="Save"
+                            Content=" Save policy " Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="Auto" FontSize="24" FontFamily="Segoe UI Light" Click="Save_Click" IsEnabled="False"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="About">
+                <Grid x:Name="AboutTab">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Resources\high_voltage.png" Stretch="Uniform" Opacity="0.2"/>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Electric Fence"
+                           HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" FontFamily="Rustico" FontSize="60" Grid.Row="0"/>
+                    <Label Content="A GUI utility for creating PowerShell NetFirewallRule scripts"
+                           HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Segoe UI Light" Grid.Row="1"/>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,260,0" TextWrapping="Wrap" TextAlignment="Right" FontFamily="Segoe UI Light"
+                               Text="Design and development&#x0a;College of Engineering&#x0a;Current version" FontSize="16" Width="202" Grid.Row="2"/>
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="255,0,0,0" TextWrapping="Wrap" TextAlignment="Left" FontFamily="Segoe UI Light"
+                               Text="| Jacob Zimmer&#x0a;| University of Missouri&#x0a;| 1.3 (10 December 2017)" FontSize="16" Width="210" Grid.Row="2"/>
+                    <Button Name="msdnButton"
+                            Content=" MSDN NetFirewallRule Reference " HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="Auto" Grid.Row="3" Click="msdnButton_Click"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
